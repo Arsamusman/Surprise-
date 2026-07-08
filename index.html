@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Infinite Love Journey | Arsam</title>
+    <title>Our Love Journey | Arsam</title>
     <!-- Premium Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -12,7 +12,7 @@
             --neon-pink: #ff2a5f;
             --neon-purple: #9d4edd;
             --neon-glow: rgba(255, 42, 95, 0.4);
-            --glass: rgba(15, 5, 20, 0.8);
+            --glass: rgba(15, 5, 20, 0.85);
             --border: rgba(255, 42, 95, 0.25);
         }
 
@@ -27,7 +27,7 @@
         body {
             background-color: var(--bg-dark);
             min-height: 100vh;
-            min-height: -webkit-fill-available; /* Mobile viewport fix */
+            min-height: -webkit-fill-available;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -49,15 +49,15 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.5;
+            opacity: 0.4;
         }
 
-        /* --- STAGE & GLASS CARD (RESPONSIVE) --- */
+        /* --- STAGE & GLASS CARD --- */
         .experience-stage {
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 440px; /* Perfect for both slim & wide mobile screens */
+            max-width: 440px;
             perspective: 1500px;
         }
 
@@ -71,11 +71,10 @@
             -webkit-backdrop-filter: blur(20px);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 42, 95, 0.15);
             transform-style: preserve-3d;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             width: 100%;
         }
 
-        /* --- TYPOGRAPHY (FLUID) --- */
+        /* --- TYPOGRAPHY --- */
         .romantic-heading {
             font-family: 'Dancing Script', cursive;
             color: var(--neon-pink);
@@ -89,14 +88,14 @@
             font-size: clamp(14px, 4.2vw, 16px);
             line-height: 1.7;
             font-weight: 300;
-            min-height: 100px; /* Fixed height budget to prevent shifting layout on mobile */
+            min-height: 110px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* --- INTERACTIVE BUTTONS GROUP --- */
+        /* --- INTERACTIVE BUTTONS --- */
         .btn-group {
             display: flex;
             flex-direction: column;
@@ -119,16 +118,14 @@
             max-width: 280px;
             box-shadow: 0 8px 20px rgba(255, 42, 95, 0.2);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            letter-spacing: 0.5px;
         }
 
-        /* Touch-device active state feedback */
         .interactive-btn:active {
             transform: scale(0.96);
             filter: brightness(1.2);
         }
 
-        /* --- MUSIC FLOATING CONTROLLER --- */
+        /* --- MUSIC ICON --- */
         .music-node {
             position: absolute;
             top: clamp(15px, 4vh, 25px);
@@ -145,7 +142,6 @@
             cursor: pointer;
             color: white;
             font-size: 16px;
-            transition: all 0.3s;
         }
 
         .music-node.playing {
@@ -159,7 +155,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* --- LOOP PANEL FOR BAR-BAR I LOVE YOU --- */
+        /* --- FIXED INFINITE LOOP OVERLAY PANEL --- */
         .loop-panel {
             position: absolute;
             top: 0;
@@ -179,18 +175,17 @@
             text-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-purple);
             pointer-events: none;
             white-space: nowrap;
-            animation: lovePopUp Mobile 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            animation: lovePopUpMobile 4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes lovePopUpMobile {
-            0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
-            20% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); opacity: 1; }
-            35% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
-            80% { transform: translate(-50%, -50%) scale(1) translateY(-40px); opacity: 1; filter: blur(0); }
-            100% { transform: translate(-50%, -50%) scale(0.7) translateY(-90px); opacity: 0; filter: blur(4px); }
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); opacity: 0; }
+            15% { transform: translate(-50%, -50%) scale(1) rotate(5deg); opacity: 1; }
+            30% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+            85% { transform: translate(-50%, -50%) scale(1) translateY(-30px); opacity: 1; filter: blur(0); }
+            100% { transform: translate(-50%, -50%) scale(0.7) translateY(-80px); opacity: 0; filter: blur(5px); }
         }
 
-        /* --- PROGRESS DOTS --- */
         .progress-dots {
             display: flex;
             gap: 8px;
@@ -212,38 +207,21 @@
             width: 18px;
             border-radius: 4px;
         }
-
-        /* Fine-tuning for tiny or landscape mobile layouts */
-        @media (max-height: 600px) {
-            .premium-card { padding: 20px; }
-            .story-text { min-height: 70px; margin-bottom: 10px; }
-            .romantic-heading { margin-bottom: 5px; }
-        }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Audio Track -->
     <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
-
-    <!-- Canvas Background -->
     <canvas id="canvas-bg"></canvas>
-
-    <!-- Floating Audio Controls -->
     <div class="music-node" id="musicBtn" onclick="toggleMusic()">🎵</div>
-
-    <!-- Infinite Love Text Overlay Layer -->
     <div class="loop-panel" id="loveLoopPanel"></div>
 
-    <!-- Main Dynamic Interface Stage -->
     <div class="experience-stage">
         <div class="premium-card" id="card">
             <div class="romantic-heading" id="cardTitle">Hello, Beautiful</div>
             <div class="story-text" id="textEngine"></div>
             
-            <div class="btn-group" id="btnGroup">
-                <!-- Dynamically populated buttons -->
-            </div>
+            <div class="btn-group" id="btnGroup"></div>
 
             <div class="progress-dots" id="dotsContainer">
                 <div class="dot active"></div>
@@ -255,7 +233,6 @@
     </div>
 
     <script>
-        // --- 1. RESPONSIVE CANVAS BACKGROUND PARTICLES ---
         const canvas = document.getElementById('canvas-bg');
         const ctx = canvas.getContext('2d');
         let particles = [];
@@ -272,8 +249,8 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 2 + 0.5;
-                this.speedY = -(Math.random() * 0.4 + 0.1);
-                this.opacity = Math.random() * 0.6 + 0.1;
+                this.speedY = -(Math.random() * 0.3 + 0.1);
+                this.opacity = Math.random() * 0.5 + 0.1;
             }
             update() {
                 this.y += this.speedY;
@@ -290,7 +267,7 @@
             }
         }
 
-        for(let i=0; i<35; i++) particles.push(new Particle()); // Optimized particle count for stable mobile frames
+        for(let i=0; i<30; i++) particles.push(new Particle());
 
         function runBg() {
             ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -299,12 +276,11 @@
         }
         runBg();
 
-        // --- 2. MULTI-PLATFORM AUDIO TOGGLE ---
         const music = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
         function toggleMusic() {
             if(music.paused) {
-                music.play().catch(() => console.log("Audio waiting for explicit interaction."));
+                music.play().catch(() => {});
                 musicBtn.classList.add('playing');
                 musicBtn.innerText = '❤️';
             } else {
@@ -314,17 +290,6 @@
             }
         }
 
-        // --- 3. RESPONSIVE ACCELEROMETER / PARALLAX SENSITIVITY ---
-        const card = document.getElementById('card');
-        if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => {
-                const x = (window.innerWidth / 2 - e.clientX) / 30;
-                const y = (window.innerHeight / 2 - e.clientY) / 30;
-                card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
-            });
-        }
-
-        // --- 4. DEEP INTERACTIVE ENGAGEMENT LAYERS ---
         const storySteps = [
             {
                 title: "A Special Message",
@@ -351,35 +316,43 @@
             },
             {
                 title: "Infinite Loop Activated",
-                text: "Mera yeh code aur meri yeh mohabbat ab ek ho chuke hain jo kabhi khatam nahi hogi... Listen to my heartbeat forever now!",
+                text: "Mera yeh code aur meri yeh mohabbat ab ek ho chuke hain jo kabhi khatam nahi hogi...",
                 buttons: [
-                    { text: "I Love You Too! 💖", nextStep: 4 }
+                    { text: "I Love You! 💖", nextStep: 4 }
                 ]
             }
         ];
 
-        let currentStep = 0;
+        let typewriterTimeout; // Variable to track and clear active typing instances
 
         function typeWriterEffect(text, elementId, speed = 35) {
             const element = document.getElementById(elementId);
             element.innerHTML = "";
+            
+            // Clear any previously running typewriter timer to avoid overlapping text
+            if(typewriterTimeout) { clearTimeout(typewriterTimeout); }
+            
             let i = 0;
             function type() {
                 if (i < text.length) {
                     element.innerHTML += text.charAt(i);
                     i++;
-                    setTimeout(type, speed);
+                    typewriterTimeout = setTimeout(type, speed);
                 }
             }
             type();
         }
 
         function loadStoryStep(stepIndex) {
-            currentStep = stepIndex;
             const stepData = storySteps[stepIndex];
-            
             document.getElementById('cardTitle').innerText = stepData.title;
-            updateDots(stepIndex);
+            
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, idx) => {
+                if(idx === stepIndex) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+
             typeWriterEffect(stepData.text, 'textEngine');
 
             const btnContainer = document.getElementById('btnGroup');
@@ -390,9 +363,7 @@
                 button.classList.add('interactive-btn');
                 button.innerText = btnInfo.text;
                 button.onclick = () => {
-                    // Start music automatically on mobile touch interaction safety
                     if(music.paused) { toggleMusic(); }
-                    
                     if(btnInfo.nextStep < storySteps.length) {
                         loadStoryStep(btnInfo.nextStep);
                     } else {
@@ -403,48 +374,48 @@
             });
         }
 
-        function updateDots(index) {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach((dot, idx) => {
-                if(idx === index) dot.classList.add('active');
-                else dot.classList.remove('active');
-            });
-        }
+        const yourCustomWords = [
+            "Ajar",
+            "Be-panah Mohabbat",
+            "Sirf Aur Sirf Aap",
+            "Mera Har Lamha",
+            "Forever Yours",
+            "Madam jee",
+            "babygirl",
+            "blackmailer",
+            "My Fiancee"
+        ];
 
-        // --- 5. MOBILE-BOUNDED INFINITE ANIMATED TEXT SPAWNER ---
         let infiniteLoopInterval;
         const stylePool = [
-            { size: 'clamp(18px, 5.5vw, 32px)', weight: '800' },
-            { size: 'clamp(14px, 4vw, 22px)', weight: '400' },
-            { size: 'clamp(22px, 7vw, 40px)', weight: '900' }
+            { size: 'clamp(16px, 5vw, 26px)', weight: '800' },
+            { size: 'clamp(14px, 4vw, 20px)', weight: '400' },
+            { size: 'clamp(18px, 6vw, 30px)', weight: '900' }
         ];
 
         function spawnLoveText() {
             const panel = document.getElementById('loveLoopPanel');
             const item = document.createElement('div');
             item.classList.add('animated-love-text');
-            item.innerText = "I LOVE YOU";
+            
+            item.innerText = yourCustomWords[Math.floor(Math.random() * yourCustomWords.length)];
 
             const config = stylePool[Math.floor(Math.random() * stylePool.length)];
             item.style.fontSize = config.size;
             item.style.fontWeight = config.weight;
 
-            // Bounding box safe calculations strictly within mobile viewport width/height
-            const x = Math.random() * (window.innerWidth - 140) + 70;
-            const y = Math.random() * (window.innerHeight - 140) + 70;
+            const x = Math.random() * (window.innerWidth - 160) + 80;
+            const y = Math.random() * (window.innerHeight - 160) + 80;
 
             item.style.left = `${x}px`;
             item.style.top = `${y}px`;
-            
-            // Mobile specific custom fallback keyframe fallback rule assignment
-            item.style.animationName = 'lovePopUpMobile';
 
             panel.appendChild(item);
 
-            setTimeout(() => { item.remove(); }, 3500);
+            setTimeout(() => { item.remove(); }, 4000);
         }
 
-         function triggerUltimateLoveLoop() {
+        function triggerUltimateLoveLoop() {
             const textEngine = document.getElementById('textEngine');
             const title = document.getElementById('cardTitle');
             const btnContainer = document.getElementById('btnGroup');
