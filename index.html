@@ -444,33 +444,28 @@
             setTimeout(() => { item.remove(); }, 3500);
         }
 
-        function triggerUltimateLoveLoop() {
+         function triggerUltimateLoveLoop() {
             const textEngine = document.getElementById('textEngine');
             const title = document.getElementById('cardTitle');
             const btnContainer = document.getElementById('btnGroup');
+
+            // CRUCIAL FIX: Force stop any running typewriter processes right now
+            if(typewriterTimeout) { clearTimeout(typewriterTimeout); }
 
             title.innerText = "Forever & Always ❤️";
             title.style.color = "var(--neon-pink)";
             title.style.textShadow = "0 0 20px var(--neon-pink)";
             
-            textEngine.innerHTML = "Mera har ek lamha, meri har ek saans aur mera yeh poora wajood sirf aur sirf aap ke liye hai, Arsam aap se be-panah mohabbat karta hai! ✨";
+            // Injecting text directly as HTML to completely lock the final message cleanly
+            textEngine.innerHTML = "I love You so much Madam jee";
             btnContainer.innerHTML = `<button class="interactive-btn" style="background:transparent; border:2px solid var(--neon-pink); box-shadow:none; pointer-events:none;">Infinity Mode Enabled 🔒</button>`;
 
-            // Initial immediate stack
-            for(let i=0; i<10; i++) {
-                setTimeout(spawnLoveText, i * 60);
-            }
-
-            // Continuous safe loop
             if(!infiniteLoopInterval) {
-                infiniteLoopInterval = setInterval(spawnLoveText, 500);
+                infiniteLoopInterval = setInterval(spawnLoveText, 600);
             }
         }
 
-        // Bootstrapping
-        window.onload = () => {
-            loadStoryStep(0);
-        };
+        window.onload = () => { loadStoryStep(0); };
     </script>
 </body>
 </html>
