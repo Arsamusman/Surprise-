@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Infinite Love Journey | Arsam</title>
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #07020a;
+            --neon-pink: #ff2a5f;
+            --neon-purple: #9d4edd;
+            --neon-glow: rgba(255, 42, 95, 0.4);
+            --glass: rgba(15, 5, 20, 0.8);
+            --border: rgba(255, 42, 95, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            min-height: 100vh;
+            min-height: -webkit-fill-available; /* Mobile viewport fix */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            padding: 15px;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        /* --- BACKGROUND PARTICLES --- */
+        #canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* --- STAGE & GLASS CARD (RESPONSIVE) --- */
+        .experience-stage {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px; /* Perfect for both slim & wide mobile screens */
+            perspective: 1500px;
+        }
+
+        .premium-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: clamp(30px, 8vw, 45px) clamp(20px, 6vw, 35px);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 42, 95, 0.15);
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+        }
+
+        /* --- TYPOGRAPHY (FLUID) --- */
+        .romantic-heading {
+            font-family: 'Dancing Script', cursive;
+            color: var(--neon-pink);
+            font-size: clamp(30px, 9vw, 42px);
+            margin-bottom: 12px;
+            text-shadow: 0 0 10px rgba(255, 42, 95, 0.3);
+        }
+
+        .story-text {
+            color: #e2d9ec;
+            font-size: clamp(14px, 4.2vw, 16px);
+            line-height: 1.7;
+            font-weight: 300;
+            min-height: 100px; /* Fixed height budget to prevent shifting layout on mobile */
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- INTERACTIVE BUTTONS GROUP --- */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .interactive-btn {
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: clamp(12px, 3.5vw, 15px) 25px;
+            font-size: clamp(13px, 4vw, 15px);
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 280px;
+            box-shadow: 0 8px 20px rgba(255, 42, 95, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 0.5px;
+        }
+
+        /* Touch-device active state feedback */
+        .interactive-btn:active {
+            transform: scale(0.96);
+            filter: brightness(1.2);
+        }
+
+        /* --- MUSIC FLOATING CONTROLLER --- */
+        .music-node {
+            position: absolute;
+            top: clamp(15px, 4vh, 25px);
+            right: clamp(15px, 4vw, 25px);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .music-node.playing {
+            animation: rotateOuter 4s linear infinite;
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        @keyframes rotateOuter {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- LOOP PANEL FOR BAR-BAR I LOVE YOU --- */
+        .loop-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .animated-love-text {
+            position: absolute;
+            color: #ffffff;
+            font-weight: 800;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-purple);
+            pointer-events: none;
+            white-space: nowrap;
+            animation: lovePopUp Mobile 3.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes lovePopUpMobile {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+            20% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); opacity: 1; }
+            35% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1) translateY(-40px); opacity: 1; filter: blur(0); }
+            100% { transform: translate(-50%, -50%) scale(0.7) translateY(-90px); opacity: 0; filter: blur(4px); }
+        }
+
+        /* --- PROGRESS DOTS --- */
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            width: 18px;
+            border-radius: 4px;
+        }
+
+        /* Fine-tuning for tiny or landscape mobile layouts */
+        @media (max-height: 600px) {
+            .premium-card { padding: 20px; }
+            .story-text { min-height: 70px; margin-bottom: 10px; }
+            .romantic-heading { margin-bottom: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Audio Track -->
+    <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+
+    <!-- Canvas Background -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- Floating Audio Controls -->
+    <div class="music-node" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+    <!-- Infinite Love Text Overlay Layer -->
+    <div class="loop-panel" id="loveLoopPanel"></div>
+
+    <!-- Main Dynamic Interface Stage -->
+    <div class="experience-stage">
+        <div class="premium-card" id="card">
+            <div class="romantic-heading" id="cardTitle">Hello, Beautiful</div>
+            <div class="story-text" id="textEngine"></div>
+            
+            <div class="btn-group" id="btnGroup">
+                <!-- Dynamically populated buttons -->
+            </div>
+
+            <div class="progress-dots" id="dotsContainer">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. RESPONSIVE CANVAS BACKGROUND PARTICLES ---
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = -(Math.random() * 0.4 + 0.1);
+                this.opacity = Math.random() * 0.6 + 0.1;
+            }
+            update() {
+                this.y += this.speedY;
+                if (this.y < 0) {
+                    this.y = canvas.height;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(233, 76, 131, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<35; i++) particles.push(new Particle()); // Optimized particle count for stable mobile frames
+
+        function runBg() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(runBg);
+        }
+        runBg();
+
+        // --- 2. MULTI-PLATFORM AUDIO TOGGLE ---
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        function toggleMusic() {
+            if(music.paused) {
+                music.play().catch(() => console.log("Audio waiting for explicit interaction."));
+                musicBtn.classList.add('playing');
+                musicBtn.innerText = '❤️';
+            } else {
+                music.pause();
+                musicBtn.classList.remove('playing');
+                musicBtn.innerText = '🎵';
+            }
+        }
+
+        // --- 3. RESPONSIVE ACCELEROMETER / PARALLAX SENSITIVITY ---
+        const card = document.getElementById('card');
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth / 2 - e.clientX) / 30;
+                const y = (window.innerHeight / 2 - e.clientY) / 30;
+                card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            });
+        }
+
+        // --- 4. DEEP INTERACTIVE ENGAGEMENT LAYERS ---
+        const storySteps = [
+            {
+                title: "A Special Message",
+                text: "Kya aapko pata hai ke is poori duniya mein mere liye sab se zyada qeemti aur haseen cheez kya hai?",
+                buttons: [
+                    { text: "Nahi, Kya?", nextStep: 1 },
+                    { text: "Main Hoon? 😉", nextStep: 1 }
+                ]
+            },
+            {
+                title: "Only You 💍",
+                text: "Bilkul sahi! Sirf aap. Jab se aap meri life mein aayi ho, lagta hai jaise har adhoori khwaish poori ho gayi hai. Kya aapko mujh par poora bharosa hai?",
+                buttons: [
+                    { text: "Haan, Behad! ❤️", nextStep: 2 },
+                    { text: "Boht Zyada... 🥰", nextStep: 2 }
+                ]
+            },
+            {
+                title: "My Promise To You",
+                text: "Main aapse vaada karta hoon ke zindagi ke har morr par, har khushi aur har mushkil mein main hamesha aapka sath nibhaonga. Ready hain magic dekhne ke liye?",
+                buttons: [
+                    { text: "Yes, Show Me! ✨", nextStep: 3 }
+                ]
+            },
+            {
+                title: "Infinite Loop Activated",
+                text: "Mera yeh code aur meri yeh mohabbat ab ek ho chuke hain jo kabhi khatam nahi hogi... Listen to my heartbeat forever now!",
+                buttons: [
+                    { text: "I Love You Too! 💖", nextStep: 4 }
+                ]
+            }
+        ];
+
+        let currentStep = 0;
+
+        function typeWriterEffect(text, elementId, speed = 35) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        function loadStoryStep(stepIndex) {
+            currentStep = stepIndex;
+            const stepData = storySteps[stepIndex];
+            
+            document.getElementById('cardTitle').innerText = stepData.title;
+            updateDots(stepIndex);
+            typeWriterEffect(stepData.text, 'textEngine');
+
+            const btnContainer = document.getElementById('btnGroup');
+            btnContainer.innerHTML = "";
+
+            stepData.buttons.forEach(btnInfo => {
+                const button = document.createElement('button');
+                button.classList.add('interactive-btn');
+                button.innerText = btnInfo.text;
+                button.onclick = () => {
+                    // Start music automatically on mobile touch interaction safety
+                    if(music.paused) { toggleMusic(); }
+                    
+                    if(btnInfo.nextStep < storySteps.length) {
+                        loadStoryStep(btnInfo.nextStep);
+                    } else {
+                        triggerUltimateLoveLoop();
+                    }
+                };
+                btnContainer.appendChild(button);
+            });
+        }
+
+        function updateDots(index) {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach((dot, idx) => {
+                if(idx === index) dot.classList.add('active');
+                else dot.classList.remove('active');
+            });
+        }
+
+        // --- 5. MOBILE-BOUNDED INFINITE ANIMATED TEXT SPAWNER ---
+        let infiniteLoopInterval;
+        const stylePool = [
+            { size: 'clamp(18px, 5.5vw, 32px)', weight: '800' },
+            { size: 'clamp(14px, 4vw, 22px)', weight: '400' },
+            { size: 'clamp(22px, 7vw, 40px)', weight: '900' }
+        ];
+
+        function spawnLoveText() {
+            const panel = document.getElementById('loveLoopPanel');
+            const item = document.createElement('div');
+            item.classList.add('animated-love-text');
+            item.innerText = "I LOVE YOU";
+
+            const config = stylePool[Math.floor(Math.random() * stylePool.length)];
+            item.style.fontSize = config.size;
+            item.style.fontWeight = config.weight;
+
+            // Bounding box safe calculations strictly within mobile viewport width/height
+            const x = Math.random() * (window.innerWidth - 140) + 70;
+            const y = Math.random() * (window.innerHeight - 140) + 70;
+
+            item.style.left = `${x}px`;
+            item.style.top = `${y}px`;
+            
+            // Mobile specific custom fallback keyframe fallback rule assignment
+            item.style.animationName = 'lovePopUpMobile';
+
+            panel.appendChild(item);
+
+            setTimeout(() => { item.remove(); }, 3500);
+        }
+
+        function triggerUltimateLoveLoop() {
+            const textEngine = document.getElementById('textEngine');
+            const title = document.getElementById('cardTitle');
+            const btnContainer = document.getElementById('btnGroup');
+
+            title.innerText = "Forever & Always ❤️";
+            title.style.color = "var(--neon-pink)";
+            title.style.textShadow = "0 0 20px var(--neon-pink)";
+            
+            textEngine.innerHTML = "Mera har ek lamha, meri har ek saans aur mera yeh poora wajood sirf aur sirf aap ke liye hai, Arsam aap se be-panah mohabbat karta hai! ✨";
+            btnContainer.innerHTML = `<button class="interactive-btn" style="background:transparent; border:2px solid var(--neon-pink); box-shadow:none; pointer-events:none;">Infinity Mode Enabled 🔒</button>`;
+
+            // Initial immediate stack
+            for(let i=0; i<10; i++) {
+                setTimeout(spawnLoveText, i * 60);
+            }
+
+            // Continuous safe loop
+            if(!infiniteLoopInterval) {
+                infiniteLoopInterval = setInterval(spawnLoveText, 500);
+            }
+        }
+
+        // Bootstrapping
+        window.onload = () => {
+            loadStoryStep(0);
+        };
+    </script>
+</body>
+</html>
